@@ -166,8 +166,10 @@ public final class PayrollGenerator {
         return 4530.0;
     }
     
-    private static String formatPayStub(String name, double payAmount, double taxes, double ytdEarnings, double ytdTaxesPaid) {
-        return String.format("%s,%.2f,%.2f,%.2f,%.2f", name, payAmount, taxes, ytdEarnings, ytdTaxesPaid);
+    private static String formatPayStub(String name, double payAmount, double taxes,
+        double ytdEarnings, double ytdTaxesPaid) {
+        return String.format("%s,%.2f,%.2f,%.2f,%.2f", name, payAmount, taxes,
+        ytdEarnings, ytdTaxesPaid);
     }
 
     /**
