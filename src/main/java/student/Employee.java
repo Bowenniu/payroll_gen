@@ -14,11 +14,11 @@ public class Employee {
      */
     private double payRate;
     /**
-     * The year-to-date earning of the employee
+     * The year-to-date earning of the employee.
      */
     private double ytdEarings;
     /**
-     * The year-to-date taxes paid of the employee
+     * The year-to-date taxes paid of the employee.
      */
     private double ytdTaxesPaid;
     /**
