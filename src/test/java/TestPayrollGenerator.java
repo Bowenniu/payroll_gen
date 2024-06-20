@@ -23,7 +23,7 @@ import java.util.List;
 public class TestPayrollGenerator {
 
     @TempDir
-    static Path tempDir;
+    static Path tempDir;   
 
 
     @Test
@@ -55,19 +55,16 @@ public class TestPayrollGenerator {
 
         String expectedPayStubs = Files
                 .readString(Paths.get("resources/original/pay_stubs_solution_to_original.csv"));
-
-
-
-        assertEquals(expectedPayStubs, actualPayStubs);
+                
+        assertEquals(expectedPayStubs,actualPayStubs);
 
 
         // you could also read lines and compared the lists
 
-
     }
 
-     @Test //Test to check if the hourly employee's salary will be calculated correctly.
-    public void testHourlyEmployeeSalary() {
+    @Test //Test to check if the hourly employee's salary will be calculated correctly.
+     public void testHourlyEmployeeSalary() {
         HourlyEmployee hourlyEmployee = new HourlyEmployee("Luffy", "s192", 30.00, 20000, 4530, 0);
         hourlyEmployee.setHourlyRate(40.00);
         hourlyEmployee.setHoursWorked(50);
@@ -75,5 +72,6 @@ public class TestPayrollGenerator {
         double actualPayStubs = hourlyEmployee.calculateSalary();
         assertEquals(expectedPayStubs, actualPayStubs, "Hourly wage employee salary is correct.");
     }
-
 }
+
+

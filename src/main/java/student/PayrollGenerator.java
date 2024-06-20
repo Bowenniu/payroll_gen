@@ -125,7 +125,8 @@ public final class PayrollGenerator {
     private static List<String> generatePayStubs(List<Employee> employees, List<TimeCard> timeCards) {
         List<String> payStubs = new ArrayList<>();
         
-        for (Employee employee : employees) {
+        for (int i = 0; i < employees.size(); i++) {
+            Employee employee = employees.get(i);
             String employeeId = employee.getId();
             TimeCard matchingTimeCard = findMatchingTimeCard(timeCards, employeeId);
             if (matchingTimeCard != null) {
@@ -142,7 +143,7 @@ public final class PayrollGenerator {
 
     private static TimeCard findMatchingTimeCard(List<TimeCard> timeCards, String employeeId) {
         return timeCards.stream()
-                        .filter(tc -> tc.getEmployeeId().equals(employeeId))
+                        .filter(timeCard -> timeCard.getEmployeeId().equals(employeeId))
                         .findFirst()
                         .orElse(null);
     }
@@ -190,7 +191,6 @@ public final class PayrollGenerator {
          * @see #process(String[])
          */
         private Arguments() {
-
         }
 
         /**
