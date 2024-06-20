@@ -13,7 +13,14 @@ public class Employee {
      * The pay rate of the employee.
      */
     private double payRate;
-
+    /**
+     * The year-to-date earning of the employee
+     */
+    private double ytdEarings;
+    /**
+     * The year-to-date taxes paid of the employee
+     */
+    private double ytdTaxesPaid;
     /**
      * 
      * @param name the name of the employee.
@@ -24,6 +31,8 @@ public class Employee {
         this.name = name;
         this.id = id;
         this.payRate = payRate;
+        this.ytdEarings = 0.0;
+        this.ytdTaxesPaid = 0.0;
     }
 
     /**
@@ -49,5 +58,18 @@ public class Employee {
     public double getPayRate() {
         return payRate;
     }
-    
+    /**
+     * 
+     * @return the year-to-date earnings of the employee.
+     */
+    public double getYtdEarnings() {
+        return ytdEarings;
+    }
+    /**
+     * 
+     * @return the year-to-date taxes paid by the employees.
+     */
+    public double getYtdTaxesPaid() {
+        return ytdTaxesPaid;
+    }
 }

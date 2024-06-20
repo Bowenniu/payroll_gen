@@ -132,8 +132,8 @@ public final class PayrollGenerator {
             if (matchingTimeCard != null) {
                 double payAmount = calculatePay(employee, matchingTimeCard);
                 double taxes = calculateTaxes(payAmount);
-                double ytdEarnings = calculateYtdEarnings(employee);
-                double ytdTaxesPaid = calculateYtdTaxesPaid(employee);
+                double ytdEarnings = calculateYtdEarnings(employee, payAmount);
+                double ytdTaxesPaid = calculateYtdTaxesPaid(employee, payAmount);
                 String payStubLine = formatPayStub(employee.getName(), payAmount, taxes, ytdEarnings, ytdTaxesPaid);
                 payStubs.add(payStubLine);
             }
@@ -158,12 +158,13 @@ public final class PayrollGenerator {
         return payAmount * 0.15;
     }
 
-    private static double calculateYtdEarnings(Employee employee) {
-        return 20000.0;
+    private static double calculateYtdEarnings(Employee employee, double payAmount) {
+        return employee.getYtdEarnings() + payAmount;
     }
 
-    private static double calculateYtdTaxesPaid(Employee employee) {
-        return 4530.0;
+    private static double calculateYtdTaxesPaid(Employee employee, double payAmount) {
+        double taxes = calculateTaxes(payAmount);
+        return employee.getYtdTaxesPaid() + taxes;
     }
     
     private static String formatPayStub(String name, double payAmount, double taxes,
