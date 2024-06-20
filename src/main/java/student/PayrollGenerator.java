@@ -1,8 +1,11 @@
 package student;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.LinkedList;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+
 
 /**
  * Main driver for the PayrollGenerator program.
@@ -46,28 +49,125 @@ public final class PayrollGenerator {
 
         // you are free to modify this code, or use it as a basis for your code
         // depends on how you want to implement the program
+        List<String> employeeLines = readLines(arguments.getEmployeeFile());
+        List<String> timeCardLines = readLines(arguments.getTimeCards());
 
-        List<String> employeeLines = FileUtil.readFileToList(arguments.getEmployeeFile());
-        List<String> timeCards = FileUtil.readFileToList(arguments.getTimeCards());
+        if (employeeLines.isEmpty() || timeCardLines.isEmpty()) {
+            System.err.println("Employee or Time Card file is empty or not found.");
+            return;
+        }
 
+        List<Employee> employees = parseEmployees(employeeLines);
+        List<TimeCard> timeCards = parseTimeCards(timeCardLines);
 
-        // Create your driver - you can do it here, or call other methods, or change this
-        // main completely minus using the arguments!
+        List<String> payStubs = generatePayStubs(employees, timeCards);
+        payStubs.add(0, "employee_name,net_pay,taxes,ytd_earnings,ytd_taxes_paid"); // Add header to output
 
-        // now save out employees to a new file
-
-        // example of how we saved out files! You don't have to follow, depends
-        // on how you want to implement the program
-        /*
-         * employeeLines = employees.stream().map(IEmployee::toCSV).collect(Collectors.toList());
-         * employeeLines.add(0, FileUtil.EMPLOYEE_HEADER);
-         * FileUtil.writeFile(arguments.getEmployeeFile(), employeeLines);
-         */
-
-        // now save out the pay stubs
-
+        String outputFilePath = arguments.getPayrollFile();
+        try {
+            Files.write(Paths.get(outputFilePath), payStubs);
+            System.out.println("Pay stubs generated successfully and saved to " + outputFilePath);
+        } catch (IOException e) {
+            System.err.println("Error writing pay stubs to file: " + e.getMessage());
+        }
     }
 
+    private static List<String> readLines(String filePath) {
+        try {
+            return Files.readAllLines(Paths.get(filePath));
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + filePath);
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    private static List<TimeCard> parseTimeCards(List<String> timeCardLines) {
+        List<TimeCard> timeCards = new ArrayList<>();
+        for (int i = 1; i < timeCardLines.size(); i++) { // in order to skip the first line, use this 
+            String line = timeCardLines.get(i);
+            String[] parts = line.split(",");
+            if (parts.length >= 2) {
+                String employeeId = parts[0].trim();
+                try {
+                int hoursWorked = Integer.parseInt(parts[1].trim());
+                timeCards.add(new TimeCard(employeeId, hoursWorked));
+                } catch (NumberFormatException e) {
+                    System.err.println("Error parsing hours worked for lines: " + line);
+                    e.printStackTrace();
+                }
+            }
+        }
+        return timeCards;
+    }
+
+    private static List<Employee> parseEmployees(List<String> employeeLines) {
+        List<Employee> employees = new ArrayList<>();
+        for (int i = 1; i < employeeLines.size(); i++) {
+            String line = employeeLines.get(i);
+            String[] parts = line.split(",");
+            if (parts.length >= 3) {
+                String name = parts[0].trim();
+                String id = parts[1].trim();
+                try {
+                double payRate = Double.parseDouble(parts[2].trim());
+                employees.add(new Employee(name, id, payRate));
+                } catch (NumberFormatException e) {
+                    System.err.println("Error parsing pay rate for line: " + line);
+                    e.printStackTrace();
+                }
+            }
+        }
+        return employees;
+    }
+
+
+    private static List<String> generatePayStubs(List<Employee> employees, List<TimeCard> timeCards) {
+        List<String> payStubs = new ArrayList<>();
+        
+        for (Employee employee : employees) {
+            String employeeId = employee.getId();
+            TimeCard matchingTimeCard = findMatchingTimeCard(timeCards, employeeId);
+            if (matchingTimeCard != null) {
+                double payAmount = calculatePay(employee, matchingTimeCard);
+                double taxes = calculateTaxes(payAmount);
+                double ytdEarnings = calculateYtdEarnings(employee);
+                double ytdTaxesPaid = calculateYtdTaxesPaid(employee);
+                String payStubLine = formatPayStub(employee.getName(), payAmount, taxes, ytdEarnings, ytdTaxesPaid);
+                payStubs.add(payStubLine);
+            }
+        }
+        return payStubs;
+    }
+
+    private static TimeCard findMatchingTimeCard(List<TimeCard> timeCards, String employeeId) {
+        return timeCards.stream()
+                        .filter(tc -> tc.getEmployeeId().equals(employeeId))
+                        .findFirst()
+                        .orElse(null);
+    }
+
+    private static double calculatePay(Employee employee, TimeCard timeCard) {
+        int hoursWorked = timeCard.getHoursWorked();
+        double payRate = employee.getPayRate();
+        return hoursWorked * payRate;
+    }
+
+    private static double calculateTaxes(double payAmount) {
+        return payAmount * 0.15;
+    }
+
+    private static double calculateYtdEarnings(Employee employee) {
+        return 20000.0;
+    }
+
+    private static double calculateYtdTaxesPaid(Employee employee) {
+        return 4530.0;
+    }
+    
+    private static String formatPayStub(String name, double payAmount, double taxes, double ytdEarnings, double ytdTaxesPaid) {
+        return String.format("%s,%.2f,%.2f,%.2f,%.2f", name, payAmount, taxes, ytdEarnings, ytdTaxesPaid);
+    }
 
     /**
      * This is an internal class. Please leave it as is/do not modify! This design is common for

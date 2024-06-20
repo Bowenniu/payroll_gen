@@ -11,11 +11,14 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import student.HourlyEmployee;
 import student.PayrollGenerator;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class TestPayrollGenerator {
 
@@ -44,11 +47,16 @@ public class TestPayrollGenerator {
         PayrollGenerator.main(args);
 
 
+        List<String> actualPayStubsLines = Files.readAllLines (payStubs);
+        String actualPayStubs = String.join("\n", actualPayStubsLines);
+        
+        System.out.println("Actual Pay Stubs:");
+        System.out.println(actualPayStubs);
 
         String expectedPayStubs = Files
                 .readString(Paths.get("resources/original/pay_stubs_solution_to_original.csv"));
 
-        String actualPayStubs = Files.readString(payStubs);
+
 
         assertEquals(expectedPayStubs, actualPayStubs);
 
@@ -58,5 +66,14 @@ public class TestPayrollGenerator {
 
     }
 
+     @Test //Test to check if the hourly employee's salary will be calculated correctly.
+    public void testHourlyEmployeeSalary() {
+        HourlyEmployee hourlyEmployee = new HourlyEmployee("Luffy", "s192", 30.00, 20000, 4530, 0);
+        hourlyEmployee.setHourlyRate(40.00);
+        hourlyEmployee.setHoursWorked(50);
+        double expectedPayStubs = 1701.7;
+        double actualPayStubs = hourlyEmployee.calculateSalary();
+        assertEquals(expectedPayStubs, actualPayStubs, "Hourly wage employee salary is correct.");
+    }
 
 }
