@@ -1,28 +1,41 @@
 package student;
 
-public class HourlyEmployee extends Employee {
+public class HourlyEmployee implements IEmployee {
+    private String name;
+    private String id;
     private double hourlyRate;
-    private int hoursWorked;
+    private double ytdEarnings;
+    private double ytdTaxesPaid;
+    private double pretaxDeductions;
+    private double hoursWorked;
 
-    public HourlyEmployee(String name, String id, double payRate, double ytdEarnings,
-    double ytdTaxesPaid, double pretaxDeductions) {
-        super(name, id, payRate, ytdEarnings, ytdTaxesPaid);
-        this.hourlyRate = payRate;
+    public HourlyEmployee(String name, String id, double hourlyRate, double ytdEarnings, double ytdTaxesPaid, double pretaxDeductions) {
+        if (hourlyRate < 0) {
+            throw new IllegalArgumentException("Hourly rate cannot be negative.");
+        }
+        this.name = name;
+        this.id = id;
+        this.hourlyRate = hourlyRate;
+        this.ytdEarnings = ytdEarnings;
+        this.ytdTaxesPaid = ytdTaxesPaid;
+        this.pretaxDeductions = pretaxDeductions;
     }
-
     /**
      * 
-     * @param payRate the hourly pay rate of the hourly paid employee.
+     * @param hourlyRate employee's hourly payment
      */
     public void setHourlyRate(double hourlyRate) {
-        this.hourlyRate = hourlyRate;
-    }
+        if (hourlyRate < 0) {
+            throw new IllegalArgumentException("Hourly rate cannot be negative.");
+        }
+    this.hourlyRate = hourlyRate;
+}
 
     /**
      * 
-     * @param hoursWorked the total hours worked of the hourly paid employee.
+     * @param hoursWorked hours the employee worked.
      */
-    public void setHoursWorked(int hoursWorked) {
+    public void setHoursWorked(double hoursWorked) {
         if (hoursWorked < 0) {
             throw new IllegalArgumentException("Hours worked cannot be negative.");
         }
@@ -30,14 +43,62 @@ public class HourlyEmployee extends Employee {
     }
 
     @Override
-    public double calculateSalary(){
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getID() {
+        return id;
+    }
+
+    @Override
+    public double getPayRate() {
+        return hourlyRate;
+    }
+
+    @Override
+    public double getYTDEarnings() {
+        return ytdEarnings;
+    }
+
+    @Override
+    public double getYTDTaxesPaid() {
+        return ytdTaxesPaid;
+    }
+
+    @Override
+    public double getPretaxDeductions() {
+        return pretaxDeductions;
+    }
+
+    @Override
+    public IPayStub runPayroll(double hoursWorked) {
         if (hoursWorked < 0) {
-            throw new IllegalArgumentException("Hours worked has not been set.");
+            throw new IllegalArgumentException("Hours worked cannot be negative.");
         }
-        double salary = hourlyRate * hoursWorked;
-        if (salary < 0) {
-            throw new IllegalArgumentException("Salary can not be negative.");
-        }
-        return salary;
+
+        double salary = calculateSalary(hoursWorked);
+        double taxes = calculateTaxes(salary);
+        double netIncome = salary - pretaxDeductions - taxes;
+
+        ytdEarnings += salary;
+        ytdTaxesPaid += taxes;
+
+        return new PayStub(name, netIncome, taxes, ytdEarnings, ytdTaxesPaid);
+    }
+
+    @Override
+    public String toCSV() {
+        return String.format("HOURLY,%s,%s,%.2f,%.2f,%.2f,%.2f",
+                name, id, hourlyRate, pretaxDeductions, ytdEarnings, ytdTaxesPaid);
+    }
+
+    private double calculateSalary(double hoursWorked) {
+        return hourlyRate * hoursWorked;
+    }
+
+    private double calculateTaxes(double salary) {
+        return salary * 0.15;
     }
 }
