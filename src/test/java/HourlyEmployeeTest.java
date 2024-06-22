@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import student.HourlyEmployee;
 
-public class TestPayrollGenerator {
+public class HourlyEmployeeTest {
     @Test 
     public void testNegativeSalary() {
         HourlyEmployee hourlyEmployee = new HourlyEmployee("Luffy", "s192", -40, 20000, 4530);
