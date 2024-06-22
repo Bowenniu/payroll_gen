@@ -7,7 +7,6 @@ public class HourlyEmployee implements IEmployee {
     private double ytdEarnings;
     private double ytdTaxesPaid;
     private double pretaxDeductions;
-    private double hoursWorked;
 
     public HourlyEmployee(String name, String id, double hourlyRate, double ytdEarnings, double ytdTaxesPaid, double pretaxDeductions) {
         if (hourlyRate < 0) {
@@ -28,18 +27,7 @@ public class HourlyEmployee implements IEmployee {
         if (hourlyRate < 0) {
             throw new IllegalArgumentException("Hourly rate cannot be negative.");
         }
-    this.hourlyRate = hourlyRate;
-}
-
-    /**
-     * 
-     * @param hoursWorked hours the employee worked.
-     */
-    public void setHoursWorked(double hoursWorked) {
-        if (hoursWorked < 0) {
-            throw new IllegalArgumentException("Hours worked cannot be negative.");
-        }
-        this.hoursWorked = hoursWorked;
+        this.hourlyRate = hourlyRate;
     }
 
     @Override
