@@ -4,8 +4,8 @@ public class HourlyEmployee extends Employee {
     private double hourlyRate;
     private int hoursWorked;
 
-    public HourlyEmployee(String name, String id, double payRate, double ytdEarnings,
-    double ytdTaxesPaid) {
+    public HourlyEmployee(String name, String id, int payRate, int ytdEarnings,
+    int ytdTaxesPaid, int pretaxDeductions) {
         super(name, id, payRate, ytdEarnings, ytdTaxesPaid);
         this.hourlyRate = payRate;
     }
