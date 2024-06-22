@@ -16,7 +16,7 @@ import student.HourlyEmployee;
 public class HourlyEmployeeTest {
     @Test 
     public void testNegativeSalary() {
-        HourlyEmployee hourlyEmployee = new HourlyEmployee("Luffy", "s192", -40, 20000, 4530);
+        HourlyEmployee hourlyEmployee = new HourlyEmployee("Luffy", "s192", -40, 20000, 4530,0);
         hourlyEmployee.setHourlyRate(-40);
         hourlyEmployee.setHoursWorked(50);
         String expectedMessage = "Salary can not be negative.";
@@ -28,7 +28,7 @@ public class HourlyEmployeeTest {
 
     @Test //Test to check if the hourly employee's salary will be calculated correctly.
      public void testHourlyEmployeeSalary() {
-        HourlyEmployee hourlyEmployee = new HourlyEmployee("Luffy", "s192", 30.00, 20000, 4530);
+        HourlyEmployee hourlyEmployee = new HourlyEmployee("Luffy", "s192", 30, 20000, 4530,0);
         hourlyEmployee.setHourlyRate(40.00);
         hourlyEmployee.setHoursWorked(50);
         double expectedPayStubs = 2000.0;
