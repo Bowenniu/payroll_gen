@@ -1,11 +1,30 @@
 package student;
 
+
 public class HourlyEmployee implements IEmployee {
+    /**
+     * Employee name in String.
+     */
     private String name;
+    /**
+     * Employee id in String.
+     */
     private String id;
+    /**
+     * Employee hourly rate in 2 decimals.
+     */
     private double hourlyRate;
+    /**
+     * Employee year-to-date earnings in 2 decimals.
+     */
     private double ytdEarnings;
+    /**
+     * Employee year-to-date taxes paid in 2 decimals.
+     */
     private double ytdTaxesPaid;
+    /**
+     * Employee pre tax deductions in 2 decimals.
+     */
     private double pretaxDeductions;
 
     /**
@@ -29,6 +48,10 @@ public class HourlyEmployee implements IEmployee {
         this.pretaxDeductions = pretaxDeductions;
     }
 
+    /**
+     * 
+     * @param hourlyRate hourly payment the employee make
+     */
     public void setHourlyRate(double hourlyRate) {
         if (hourlyRate < 0) {
             throw new IllegalArgumentException("Hourly rate cannot be negative.");
