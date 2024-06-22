@@ -78,7 +78,7 @@ public class SalaryEmployee implements IEmployee {
     @Override
     public IPayStub runPayroll(double hoursWorked) {
         if (hoursWorked < 0) {
-            return null;
+            throw new IllegalArgumentException("Hours worked cannot be negative.");
         }
         double netPay = payRate / 24;
 
@@ -98,7 +98,7 @@ public class SalaryEmployee implements IEmployee {
     @Override
     public String toCSV() {
         return String.format("SALARY,%s,%s,%.2f,%.2f,%.2f,%.2f",
-        name, id, payRate, pretaxDeductions, ytdEarnings, ytdTaxesPaid);
+            name, id, payRate, pretaxDeductions, ytdEarnings, ytdTaxesPaid);
     }
     
 }
