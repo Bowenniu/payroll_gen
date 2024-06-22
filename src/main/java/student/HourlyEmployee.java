@@ -8,7 +8,16 @@ public class HourlyEmployee implements IEmployee {
     private double ytdTaxesPaid;
     private double pretaxDeductions;
 
-    public HourlyEmployee(String name, String id, double hourlyRate, double ytdEarnings, double ytdTaxesPaid, double pretaxDeductions) {
+    /**
+     * @param name name of the employee.
+     * @param id id of the employee.
+     * @param hourlyRate hourlyRate of the employee.
+     * @param ytdEarnings year-to-date earnings of the employee.
+     * @param ytdTaxesPaid year-to-date taxes paid of the employee.
+     * @param pretaxDeductions the pre tax deductions of the employee.
+     */
+    public HourlyEmployee(String name, String id, double hourlyRate, double ytdEarnings,
+        double ytdTaxesPaid, double pretaxDeductions) {
         if (hourlyRate < 0) {
             throw new IllegalArgumentException("Hourly rate cannot be negative.");
         }
@@ -19,10 +28,7 @@ public class HourlyEmployee implements IEmployee {
         this.ytdTaxesPaid = ytdTaxesPaid;
         this.pretaxDeductions = pretaxDeductions;
     }
-    /**
-     * 
-     * @param hourlyRate employee's hourly payment
-     */
+
     public void setHourlyRate(double hourlyRate) {
         if (hourlyRate < 0) {
             throw new IllegalArgumentException("Hourly rate cannot be negative.");
@@ -87,6 +93,6 @@ public class HourlyEmployee implements IEmployee {
     }
 
     private double calculateTaxes(double salary) {
-        return salary * 0.15;
+        return salary * 0.15; 
     }
 }

@@ -33,20 +33,20 @@ public class PayRollTest {
         });
         assertEquals("Hours worked cannot be negative.", exception.getMessage());
     }
-    
-    @Test 
+
+     @Test 
     public void testHourlyEmployeeSalary() {
         HourlyEmployee hourlyEmployee = new HourlyEmployee("Luffy", "s192", 40.00, 20000.00, 4530.00, 0.00);
         double hoursWorked = 50;
         double expectedSalary = 40.00 * hoursWorked;
-        double expectedNetIncome = expectedSalary - expectedSalary * 0.15; // Net income after 15% tax
+        double expectedNetIncome = expectedSalary - expectedSalary * 0.15;
         double expectedYtdEarnings = 20000.00 + expectedSalary;
         double expectedYtdTaxesPaid = 4530.00 + expectedSalary * 0.15;
 
         IPayStub payStub = hourlyEmployee.runPayroll(hoursWorked);
-        double actualSalary = payStub.getPay();
+        double actualNetIncome = payStub.getPay();
 
-        assertEquals(expectedNetIncome, actualSalary, 0.01, "Hourly wage employee net income is correct.");
+        assertEquals(expectedNetIncome, actualNetIncome, 0.01, "Hourly wage employee net income is correct.");
         assertEquals(expectedYtdEarnings, hourlyEmployee.getYTDEarnings(), 0.01, "YTD earnings are correct.");
         assertEquals(expectedYtdTaxesPaid, hourlyEmployee.getYTDTaxesPaid(), 0.01, "YTD taxes paid are correct.");
     }
