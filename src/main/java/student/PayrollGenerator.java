@@ -111,7 +111,7 @@ public final class PayrollGenerator {
                 String id = parts[1].trim();
                 try {
                 double payRate = Double.parseDouble(parts[2].trim());
-                employees.add(new Employee(name, id, payRate));
+                employees.add(new Employee(name, id, payRate, payRate, payRate));
                 } catch (NumberFormatException e) {
                     System.err.println("Error parsing pay rate for line: " + line);
                     e.printStackTrace();
