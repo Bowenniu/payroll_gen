@@ -9,12 +9,49 @@ This document is meant to provide a tool for you to demonstrate the design proce
 Place your class diagram below. Make sure you check the fil in the browser on github.com to make sure it is rendering correctly. If it is not, you will need to fix it. As a reminder, here is a link to tools that can help you create a class diagram: [Class Resources: Class Design Tools](https://github.com/CS5004-khoury-lionelle/Resources?tab=readme-ov-file#uml-design-tools)
 
 
+```mermaid
+---
+title: Payroll Generator Design
+---
+classDiagram
+    
+    class  PayrollGenerator{
+        + PayrollGenerator()
+        + main(args: String[]): void
+        + Arguments process(args: String[]): Arguments
+    }
+    class Arguments {
+       - employeeFile: String
+       - payrollFile: String
+       - timeCards: String
+       + Arguments()
+       + getEmployeeFile(): String
+       + getPayrollFile(): String
+       + getTimeCards(): String
+       + printHelp(): void
+       + process(args: String[]): Arguments
+
+    }
+    class FileUtil {
+       + EMPLOYEE_HEADER: String
+       + PAY_STUB_HEADER: String
+       - FileUtil()
+       + readFileToList(file: String): List<String>
+       + writeFile(outFile: String, lines: List<String>)
+    }
+```
 
 
 
 ## (INITIAL DESIGN): Tests to Write - Brainstorm
 
 Write a test (in english) that you can picture for the class diagram you have created. This is the brainstorming stage in the TDD process. 
+
+There are several tests to be created.
+1. Test to read a file, reading the file with data successfully. The expected outcome is list of Strings 
+2. Test to read a not avaliable file. Reading the file that is not avaliable, return empty list and throw error message to the user.
+3. Test to create a new file for the employee.
+4. Test give negative salary and tell the user that is invalid
 
 > [!TIP]
 > As a reminder, this is the TDD process we are following:
